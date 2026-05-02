@@ -1,0 +1,40 @@
+package com.klef.fsad.exam;
+
+import org.hibernate.*;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.MutationQuery;
+
+public class ClientDemo {
+    public static void main(String[] args) {
+
+        Configuration cfg = new Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        cfg.addAnnotatedClass(Payment.class);
+
+        SessionFactory sf = cfg.buildSessionFactory();
+        Session session = sf.openSession();
+
+        Transaction tx = session.beginTransaction();
+
+        Payment p = new Payment(101, "Ali", "2026-05-02", "Success", 5000);
+        session.persist(p);
+
+        tx.commit();
+
+        Transaction tx2 = session.beginTransaction();
+
+        MutationQuery q = session.createMutationQuery(
+            "delete from Payment p where p.id = :pid"
+        );
+
+        q.setParameter("pid", 101);
+        int count = q.executeUpdate();
+
+        tx2.commit();
+
+        System.out.println(count + " record deleted");
+
+        session.close();
+        sf.close();
+    }
+}
