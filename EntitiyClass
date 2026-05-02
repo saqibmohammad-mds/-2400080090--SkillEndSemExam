@@ -1,0 +1,28 @@
+package com.klef.fsad.exam;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "payment")
+public class Payment {
+
+    @Id
+    private int id;
+    private String name;
+    private String date;
+    private String status;
+    private double amount;
+
+    public Payment() {
+    }
+
+    public Payment(int id, String name, String date, String status, double amount) {
+        this.id = id;
+        this.name = name;
+        this.date = date;
+        this.status = status;
+        this.amount = amount;
+    }
+}
